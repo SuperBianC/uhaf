@@ -1,2 +1,7 @@
 ./__pycache__/*
+./dist/*
+./uhaf.egg-info/*
+./pyproject.toml
+./setup.py
+
 
