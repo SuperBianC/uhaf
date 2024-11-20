@@ -3,5 +3,8 @@
 ./uhaf.egg-info/*
 ./pyproject.toml
 ./setup.py
+./tests/*
+./LICENSE
+
 
 
