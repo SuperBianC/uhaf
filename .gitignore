@@ -8,3 +8,5 @@
 !README.md
 !requirements.txt
 !.gitignore
+
+uhaf/__pycache__/**
