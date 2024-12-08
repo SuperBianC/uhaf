@@ -1,7 +1,10 @@
 *
 
 !uhaf/
+!uhaf/**
 !tutorials/
+!tutorials/**
+
 !README.md
 !requirements.txt
 !.gitignore
