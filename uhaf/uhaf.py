@@ -19,6 +19,7 @@ class uHAF:
         self.dict_uhafs = {}
         self.df_uhaf_marker = {}
         self.generate_dict_uhafs(target_sheetnames)
+        self.oran_list = self.sheet_names
 
     def track_cell_from_uHAF(self, sheet_name, cell_type_target):
         """
@@ -251,7 +252,7 @@ class uHAF:
         Returns:
             str: Prompt for uHAF mapping.
         """
-        prompts = f"The cell types are: \n{custom_cell_types}."
+        prompts = f"The cell types are: \n{custom_cell_types}.\n"
         prompts += f'Copy the above cell types and paste them on the website (https://uhaf.unifiedcellatlas.org/#/uHAFMapping) to get the corresponding mapping dictionary.'
         return prompts
 
