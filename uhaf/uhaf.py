@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
+import re
 
 
 class uHAF:
@@ -92,7 +93,7 @@ class uHAF:
             for sheet_name in sheetnames:
                 self.decode_child_father_pairs(sheet_name)
         else:
-            print('No sheetnames specified, generating uHAF for all organs')
+            print('No sheetnames specified, generating uHAF of every organ')
             for sheet_name in self.sheet_names:
                 if contains_chinese(sheet_name):
                     continue
@@ -271,11 +272,32 @@ def contains_chinese(s):
             return True
     return False
 
-def build_uhaf(uhaf_xlsx_version=None, target_sheetnames=None, uhaf_path=None):
+
+def get_latest_version(folder_path):
+    version_pattern = r'uHAF(\d+\.\d+\.\d+)\.xlsx$'
+    files = os.listdir(folder_path)
+    versions = []
+
+    for file in files:
+        match = re.search(version_pattern, file)
+        if match:
+            versions.append(match.group(1))
+
+    if versions:
+        latest_version = max(versions, key=lambda v: [int(x) for x in v.split('.')])
+        return latest_version
+    else:
+        return None
+
+def build_uhaf(latest: bool = True, 
+               uhaf_xlsx_version: str = None, 
+               target_sheetnames: list = None, 
+               uhaf_path: str = None) -> uHAF:
     """
     Build a uHAF instance from an Excel file.
 
     Args:
+        latest (bool, optional): Flag to fetch the latest uHAF version. Default is True.
         uhaf_xlsx_version (str, optional): Version of the uHAF Excel file. Default is None.
         target_sheetnames (list, optional): List of target sheet names. Default is None.
         uhaf_path (str, optional): Path to the uHAF Excel file. Default is None.
@@ -284,6 +306,10 @@ def build_uhaf(uhaf_xlsx_version=None, target_sheetnames=None, uhaf_path=None):
         uHAF: Instance of the uHAF class.
     """
     if not uhaf_path:
-        uhaf_path = os.path.join(os.path.dirname(__file__), 'reference', uhaf_xlsx_version + '.xlsx')
+        if latest:
+            folder_path = os.path.join(os.path.dirname(__file__), 'reference')
+            uhaf_xlsx_version = get_latest_version(folder_path)
+            print('Using the latest uHAF version:', uhaf_xlsx_version)
+        uhaf_path = os.path.join(os.path.dirname(__file__), 'reference', f'uHAF{uhaf_xlsx_version}.xlsx')
     uhaf_ex = pd.read_excel(uhaf_path, sheet_name=None)
     return uHAF(uhaf_ex, target_sheetnames)
