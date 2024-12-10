@@ -6,7 +6,7 @@ import re
 
 
 class uHAF:
-    def __init__(self, uhaf_ex, target_sheetnames=None):
+    def __init__(self, uhaf_ex, target_sheetnames=None, uhafversion = None):
         """
         Initialize the uHAF class.
 
@@ -21,6 +21,8 @@ class uHAF:
         self.df_uhaf_marker = {}
         self.generate_dict_uhafs(target_sheetnames)
         self.oran_list = self.sheet_names
+        self.uhafversion = self.current_version(uhafversion)
+    
 
     def track_cell_from_uHAF(self, sheet_name, cell_type_target):
         """
@@ -256,6 +258,12 @@ class uHAF:
         prompts = f"The cell types are: \n{custom_cell_types}.\n"
         prompts += f'Copy the above cell types and paste them on the website (https://uhaf.unifiedcellatlas.org/#/uHAFMapping) to get the corresponding mapping dictionary.'
         return prompts
+    
+    
+    def current_version(self, uhafversion):
+        if not uhafversion:
+            return get_latest_version()
+        return uhafversion
 
 def contains_chinese(s):
     """
@@ -273,7 +281,9 @@ def contains_chinese(s):
     return False
 
 
-def get_latest_version(folder_path):
+def get_latest_version():
+
+    folder_path = os.path.join(os.path.dirname(__file__), 'reference')
     version_pattern = r'uHAF(\d+\.\d+\.\d+)\.xlsx$'
     files = os.listdir(folder_path)
     versions = []
@@ -307,9 +317,8 @@ def build_uhaf(latest: bool = True,
     """
     if not uhaf_path:
         if latest:
-            folder_path = os.path.join(os.path.dirname(__file__), 'reference')
-            uhaf_xlsx_version = get_latest_version(folder_path)
+            uhaf_xlsx_version = get_latest_version()
             print('Using the latest uHAF version:', uhaf_xlsx_version)
         uhaf_path = os.path.join(os.path.dirname(__file__), 'reference', f'uHAF{uhaf_xlsx_version}.xlsx')
     uhaf_ex = pd.read_excel(uhaf_path, sheet_name=None)
-    return uHAF(uhaf_ex, target_sheetnames)
+    return uHAF(uhaf_ex, target_sheetnames,uhaf_xlsx_version)
