@@ -321,4 +321,4 @@ def build_uhaf(latest: bool = True,
             print('Using the latest uHAF version:', uhaf_xlsx_version)
         uhaf_path = os.path.join(os.path.dirname(__file__), 'reference', f'uHAF{uhaf_xlsx_version}.xlsx')
     uhaf_ex = pd.read_excel(uhaf_path, sheet_name=None)
-    return uHAF(uhaf_ex, target_sheetnames,uhaf_xlsx_version)
+    return uHAF(uhaf_ex, target_sheetnames=target_sheetnames, uhafversion=uhaf_xlsx_version)
