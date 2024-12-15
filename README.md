@@ -1,4 +1,4 @@
-# uHAF: Universal Hierarchical Annotation Framework
+# uHAF: a unified hierarchical annotation framework for cell type standardization and harmonization
 
 uHAF is a Python library developed to address the challenges of inconsistent cell type annotations in single-cell transcriptomics, such as varied naming conventions and hierarchical granularity. It integrates organ-specific hierarchical cell type trees (uHAF-T) and a mapping tool (uHAF-GPT) powered by large language models to provide a standardized framework for annotation. By enabling consistent label unification, hierarchical analysis, and integration of diverse datasets, uHAF enhances machine learning applications and facilitates biologically meaningful evaluations. This library is an essential resource for the single-cell research community, fostering collaborative refinement and standardization of cell type annotations.
 
