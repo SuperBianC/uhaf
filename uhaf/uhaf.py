@@ -19,6 +19,7 @@ class uHAF:
         self.df_uhafs = {}
         self.dict_uhafs = {}
         self.df_uhaf_marker = {}
+        self.marker_dict = {}
         self.generate_dict_uhafs(target_sheetnames)
         self.oran_list = self.sheet_names
         self.uhafversion = self.current_version(uhafversion)
@@ -124,13 +125,45 @@ class uHAF:
         """
         ex = self.uhaf_ex[sheet_name]
         celltypes_maker_excel = self.extract_celltype_and_markers(ex)
-        df_0 = self.excel_to_paired_df_with_marker(celltypes_maker_excel)
-        df_0.index = df_0['child']
-        df_0['organ'] = sheet_name
-        df_0 = df_0[['child', 'father', 'marker', 'organ']]
-        self.df_uhafs[sheet_name] = df_0[['child', 'father', 'organ']]
-        self.df_uhaf_marker[sheet_name] = df_0
-        self.dict_uhafs[sheet_name] = self.convert_to_nested_dict(df_0[['child', 'father']])
+        df_paired = self.excel_to_paired_df_with_marker(celltypes_maker_excel)
+        df_paired.index = df_paired['child']
+        df_paired['organ'] = sheet_name
+        df_paired = df_paired[['child', 'father', 'marker', 'organ']]
+        self.df_uhafs[sheet_name] = df_paired[['child', 'father', 'organ']]
+        self.df_uhaf_marker[sheet_name] = df_paired.copy()
+
+        if not df_paired.marker.isna().all():
+            self.df_uhaf_marker[sheet_name]['combined_markers'] = self.df_uhaf_marker[sheet_name]['child'].apply(lambda x: self.get_combined_markers(x, self.df_uhaf_marker[sheet_name], sheet_name))
+            self.marker_dict[sheet_name] = {row['child']: set(row['combined_markers']) for _, row in self.df_uhaf_marker[sheet_name].iterrows()}
+        self.dict_uhafs[sheet_name] = self.convert_to_nested_dict(df_paired[['child', 'father']])
+        
+    def get_combined_markers(self, target_cell_type, df, organ, combined_markers=None):
+        if combined_markers is None:
+            combined_markers = set()
+        
+        ancestors = self.track_cell_from_uHAF(organ, target_cell_type)[::-1]
+        
+        if not ancestors:
+            return list(combined_markers)
+        
+        if target_cell_type in df['child'].values:
+            markers = df.loc[df['child'] == target_cell_type, 'marker'].values[0]
+            markers = self.extract_genes(markers)
+            combined_markers.update(markers) 
+            
+        
+        for ancestor in ancestors:
+            if ancestor != target_cell_type: 
+                return self.get_combined_markers(ancestor, df, organ, combined_markers)
+        
+        return list(combined_markers)
+
+    def extract_genes(self, gene_str):
+        if isinstance(gene_str, str):
+            gene_str = gene_str.replace(' or ', ',').replace(' and ', ',').replace('(', '').replace(')', '')
+            genes = [gene.strip() for gene in gene_str.split(',')]
+            return genes
+        return []
 
     def find_marker_column(self, columns):
         """
