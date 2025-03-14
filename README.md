@@ -1,11 +1,11 @@
 # uHAF: a unified hierarchical annotation framework for cell type standardization and harmonization
 
-uHAF is a Python library developed to address the challenges of inconsistent cell type annotations in single-cell transcriptomics, such as varied naming conventions and hierarchical granularity. It integrates organ-specific hierarchical cell type trees (uHAF-T) and a mapping tool (uHAF-GPT) powered by large language models to provide a standardized framework for annotation. By enabling consistent label unification, hierarchical analysis, and integration of diverse datasets, uHAF enhances machine learning applications and facilitates biologically meaningful evaluations. This library is an essential resource for the single-cell research community, fostering collaborative refinement and standardization of cell type annotations.
+uHAF is a Python library developed to address the challenges of inconsistent cell type annotations in single-cell transcriptomics, such as varied naming conventions and hierarchical granularity. It integrates organ-specific hierarchical cell type trees (uHAF-T) and a mapping tool (uHAF-Agent) powered by large language models to provide a standardized framework for annotation. By enabling consistent label unification, hierarchical analysis, and integration of diverse datasets, uHAF enhances machine learning applications and facilitates biologically meaningful evaluations. This library is an essential resource for the single-cell research community, fostering collaborative refinement and standardization of cell type annotations.
 
 ## Explore Online
 
 - [uHAF-T Explorer](https://uhaf.unifiedcellatlas.org): Browse and explore uHAF-Ts.
-- [uHAF-GPT Mapping](https://uhaf.unifiedcellatlas.org/#/uHAFMapping): Map custom cell type labels to uHAF-Ts.
+- [uHAF-Agent Mapping](https://uhaf.unifiedcellatlas.org/#/uHAFMapping): Map custom cell type labels to uHAF-Ts.
 
 ## Installation
 
@@ -72,13 +72,13 @@ To map custom cell type labels to uHAF:
    original_labels = ['V-CM', 'LA-CM', 'RA-CM', 'Capillary-EC', 'Lymphatic-EC']
    ```
 
-2. Generate uHAF-GPT prompts:
+2. Generate uHAF-Agent prompts:
 
    ```python
-   print(uhaf.generate_uhaf_GPTs_prompts('Heart', original_labels))
+   print(uhaf.generate_uhaf_Agent_prompts('Heart', original_labels))
    ```
 
-   Copy the output and use it on the [uHAF-GPT Mapping Website](https://uhaf.unifiedcellatlas.org/#/uHAFMapping) to get the mapped labels.
+   Copy the output and use it on the [uHAF-Agent Mapping Website](https://uhaf.unifiedcellatlas.org/#/uHAFMapping) to get the mapped labels.
 
 3. Use the mapping dictionary to transform your labels:
 

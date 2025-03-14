@@ -277,9 +277,9 @@ class uHAF:
         """
         return {'Cell': self.build_nested_dict(df, 'Cell')}
 
-    def generate_uhaf_GPTs_prompts(self, sheet_name, custom_cell_types):
+    def generate_uhaf_Agent_prompts(self, sheet_name, custom_cell_types):
         """
-        Generate uHAF mapping prompts for GPT tools.
+        Generate uHAF mapping prompts for mapping tools.
 
         Args:
             sheet_name (str): Name of the sheet.
