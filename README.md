@@ -5,7 +5,7 @@ uHAF is a Python library developed to address the challenges of inconsistent cel
 ## Explore Online
 
 - [uHAF-T Explorer](https://uhaf.unifiedcellatlas.org): Browse and explore uHAF-Ts.
-- [uHAF-Agent Mapping](https://uhaf.unifiedcellatlas.org/#/uHAFMapping): Map custom cell type labels to uHAF-Ts.
+- [uHAF-Agent Mapping](https://uhaf.unifiedcellatlas.org/#/uHAFMapping): Map custom cell type labels to uHAF-T nodes.
 
 ## Installation
 
